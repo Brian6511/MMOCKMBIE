@@ -233,7 +233,7 @@ const Navbar = () => {
       </div>
 
       {open && (
-        <div className="xl:hidden bg-card border-t border-border animate-fade-in">
+        <div className="xl:hidden bg-card border-t border-border animate-fade-in max-h-[calc(100vh-4rem)] overflow-y-auto">
           <nav className="section-container py-4 flex flex-col gap-1">
             {navLinks.map((l) =>
               l.label === "Services" ? (
