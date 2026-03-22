@@ -63,6 +63,8 @@ const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [productsDropdownOpen, setProductsDropdownOpen] = useState(false);
   const [branchesDropdownOpen, setBranchesDropdownOpen] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
+  const [mobileBranchesOpen, setMobileBranchesOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<keyof typeof productCategories>("Savings");
   const location = useLocation();
 
@@ -238,67 +240,98 @@ const Navbar = () => {
             {navLinks.map((l) =>
               l.label === "Services" ? (
                 <div key={l.label}>
-                  <p className="px-4 py-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">{l.label}</p>
-                  <div className="ml-4">
-                    {Object.entries(productCategories).map(([category, products]) => (
-                      <div key={category} className="mb-4">
-                        <p className="px-3 py-2 text-xs font-bold text-primary uppercase tracking-wider">{category}</p>
-                        <div className="space-y-1">
-                          {products.map((product) => (
-                            <Link
-                              key={product.slug}
-                              to={`/products/${product.slug}`}
-                              onClick={() => setOpen(false)}
-                              className="px-3 py-2 rounded-lg text-sm font-medium text-foreground hover:bg-secondary block"
-                            >
-                              {product.title}
-                            </Link>
-                          ))}
+                  <button
+                    onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
+                    className="w-full px-4 py-3 text-sm font-medium text-foreground hover:bg-secondary rounded-lg flex items-center justify-between"
+                  >
+                    {l.label}
+                    <ChevronDown className={`w-4 h-4 transition-transform ${mobileServicesOpen ? "rotate-180" : ""}`} />
+                  </button>
+                  {mobileServicesOpen && (
+                    <div className="ml-4 mt-2 space-y-3 pb-3 border-b border-border mb-3">
+                      {Object.entries(productCategories).map(([category, products]) => (
+                        <div key={category} className="mb-4">
+                          <p className="px-3 py-2 text-xs font-bold text-primary uppercase tracking-wider">{category}</p>
+                          <div className="space-y-1">
+                            {products.map((product) => (
+                              <Link
+                                key={product.slug}
+                                to={`/products/${product.slug}`}
+                                onClick={() => {
+                                  setOpen(false);
+                                  setMobileServicesOpen(false);
+                                }}
+                                className="px-3 py-2 rounded-lg text-sm font-medium text-foreground hover:bg-secondary block"
+                              >
+                                {product.title}
+                              </Link>
+                            ))}
+                          </div>
                         </div>
-                      </div>
-                    ))}
-                    <Link
-                      to="/products"
-                      onClick={() => setOpen(false)}
-                      className="px-3 py-2 rounded-lg text-sm font-semibold text-primary hover:bg-primary/5 block"
-                    >
-                      View All Products
-                    </Link>
-                    <Link
-                      to="/loan-calculator"
-                      onClick={() => setOpen(false)}
-                      className="px-3 py-2 rounded-lg text-sm font-semibold text-primary hover:bg-primary/5 block"
-                    >
-                      Loan Calculator
-                    </Link>
-                  </div>
+                      ))}
+                      <Link
+                        to="/products"
+                        onClick={() => {
+                          setOpen(false);
+                          setMobileServicesOpen(false);
+                        }}
+                        className="px-3 py-2 rounded-lg text-sm font-semibold text-primary hover:bg-primary/5 block"
+                      >
+                        View All Products
+                      </Link>
+                      <Link
+                        to="/loan-calculator"
+                        onClick={() => {
+                          setOpen(false);
+                          setMobileServicesOpen(false);
+                        }}
+                        className="px-3 py-2 rounded-lg text-sm font-semibold text-primary hover:bg-primary/5 block"
+                      >
+                        Loan Calculator
+                      </Link>
+                    </div>
+                  )}
                 </div>
               ) : l.label === "Branches" ? (
                 <div key={l.label}>
-                  <p className="px-4 py-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">{l.label}</p>
-                  <div className="ml-4 space-y-2">
-                    {branches.map((branch) => (
-                      <Link
-                        key={branch.slug}
-                        to={`/branches/${branch.slug}`}
-                        onClick={() => setOpen(false)}
-                        className="px-3 py-2 rounded-lg text-sm font-medium text-foreground hover:bg-secondary block"
-                      >
-                        <div className="flex items-center gap-2">
-                          <span>{branch.name}</span>
-                          {branch.isHQ && <Star className="w-3 h-3 text-accent flex-shrink-0" />}
-                        </div>
-                        <p className="text-xs text-muted-foreground mt-0.5">{branch.region}</p>
-                      </Link>
-                    ))}
-                  </div>
-                  <Link
-                    to="/branches"
-                    onClick={() => setOpen(false)}
-                    className="px-3 py-2 rounded-lg text-sm font-semibold text-primary hover:bg-primary/5 block ml-4 mt-2"
+                  <button
+                    onClick={() => setMobileBranchesOpen(!mobileBranchesOpen)}
+                    className="w-full px-4 py-3 text-sm font-medium text-foreground hover:bg-secondary rounded-lg flex items-center justify-between"
                   >
-                    View All Branches
-                  </Link>
+                    {l.label}
+                    <ChevronDown className={`w-4 h-4 transition-transform ${mobileBranchesOpen ? "rotate-180" : ""}`} />
+                  </button>
+                  {mobileBranchesOpen && (
+                    <div className="ml-4 mt-2 space-y-2 pb-3 border-b border-border mb-3">
+                      {branches.map((branch) => (
+                        <Link
+                          key={branch.slug}
+                          to={`/branches/${branch.slug}`}
+                          onClick={() => {
+                            setOpen(false);
+                            setMobileBranchesOpen(false);
+                          }}
+                          className="px-3 py-2 rounded-lg text-sm font-medium text-foreground hover:bg-secondary block"
+                        >
+                          <div className="flex items-center gap-2">
+                            <span>{branch.name}</span>
+                            {branch.isHQ && <Star className="w-3 h-3 text-accent flex-shrink-0" />}
+                          </div>
+                          <p className="text-xs text-muted-foreground mt-0.5">{branch.region}</p>
+                        </Link>
+                      ))}
+                      <Link
+                        to="/branches"
+                        onClick={() => {
+                          setOpen(false);
+                          setMobileBranchesOpen(false);
+                        }}
+                        className="px-3 py-2 rounded-lg text-sm font-semibold text-primary hover:bg-primary/5 block mt-2"
+                      >
+                        View All Branches
+                      </Link>
+                    </div>
+                  )}
                 </div>
               ) : (
                 <Link
@@ -319,7 +352,7 @@ const Navbar = () => {
               href="https://wa.me/237670000000"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-gold text-center text-sm mt-2"
+              className="btn-gold text-center text-sm mt-4"
             >
               <Phone className="w-4 h-4 inline mr-2" />
               WhatsApp Us
